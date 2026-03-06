@@ -28,16 +28,16 @@ pub fn encode(bits: BitArray) -> Result(String, EncodingError) {
 }
 
 //TODO: now write a map so we can decode easier, then write the encode with checksum function
-pub fn decode(ip: String) -> BitArray {
-  // pad to make a mulitple of 5
-  let bits =
-    bit_array.append(bits, case bit_array.bit_size(bits) % 5 {
-      0 -> <<>>
-      oth -> <<0:size({ 5 - oth })>>
-    })
-
-  iterate_bytes(bits, Ok(""))
-}
+//pub fn decode(ip: String) -> BitArray {
+//  // pad to make a mulitple of 5
+//  let bits =
+//    bit_array.append(bits, case bit_array.bit_size(bits) % 5 {
+//      0 -> <<>>
+//      oth -> <<0:size({ 5 - oth })>>
+//    })
+//
+//  iterate_bytes(bits, Ok(""))
+//}
 
 pub type EncodingError {
   UnexpectedChar(got: Int)
