@@ -1,0 +1,1 @@
+git push --mirror github
