@@ -4,15 +4,37 @@ import gleam/io
 import gleam/result
 import gleam/string
 
+pub fn encode_with_checksum(bits: BitArray) -> Result(String, EncodingError) {
+  //  // pad to make a mulitple of 5
+  //  let bits =
+  //    bit_array.append(bits, case bit_array.bit_size(bits) % 5 {
+  //      0 -> <<>>
+  //      oth -> <<0:size({ 5 - oth })>>
+  //    })
+  //
+  //  iterate_bytes(bits, Ok(""))
+  todo
+}
+
 pub fn encode(bits: BitArray) -> Result(String, EncodingError) {
   // pad to make a mulitple of 5
-  echo bits
   let bits =
     bit_array.append(bits, case bit_array.bit_size(bits) % 5 {
       0 -> <<>>
       oth -> <<0:size({ 5 - oth })>>
     })
-  echo bits
+
+  iterate_bytes(bits, Ok(""))
+}
+
+//TODO: now write a map so we can decode easier, then write the encode with checksum function
+pub fn decode(ip: String) -> BitArray {
+  // pad to make a mulitple of 5
+  let bits =
+    bit_array.append(bits, case bit_array.bit_size(bits) % 5 {
+      0 -> <<>>
+      oth -> <<0:size({ 5 - oth })>>
+    })
 
   iterate_bytes(bits, Ok(""))
 }
@@ -75,7 +97,6 @@ fn iterate_bytes(
           }
         }
         <<>> -> {
-          io.println("done!")
           Ok(output)
         }
         e -> {
@@ -87,7 +108,10 @@ fn iterate_bytes(
 }
 
 pub fn i() -> Nil {
-  <<32, 128, 10>> |> echo |> encode |> echo |> result.unwrap("") |> io.println
-  <<2>> |> echo |> encode |> echo |> result.unwrap("") |> io.println
-  <<0>> |> echo |> encode |> echo |> result.unwrap("") |> io.println
+  bit_array.from_string("hello")
+  |> encode
+  |> result.unwrap("")
+  |> io.println
+  //  <<2>> |> echo |> encode |> echo |> result.unwrap("") |> io.println
+  //  <<0>> |> echo |> encode |> echo |> result.unwrap("") |> io.println
 }
