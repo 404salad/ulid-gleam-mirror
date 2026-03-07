@@ -30,7 +30,7 @@ pub fn encode(bits: BitArray) -> Result(String, EncodingError) {
 fn process_char(c: String) -> Int {
   // example operation
   case c {
-    "L" | "1" -> 1
+    "I" | "L" | "1" -> 1
     "2" -> 2
     "3" -> 3
     "4" -> 4
