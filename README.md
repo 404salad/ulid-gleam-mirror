@@ -1,3 +1,6 @@
+# NOTE
+use <https://github.com/rvcas/ids/blob/main/src/ids/ulid.gleam> instead, this codebase was created purely for learning gleam
+
 # ulid
 
 [![Package Version](https://img.shields.io/hexpm/v/ulid)](https://hex.pm/packages/ulid)
