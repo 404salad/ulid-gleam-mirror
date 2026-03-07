@@ -1,6 +1,7 @@
 import crockford_base32
 import gleam/bit_array
 import gleeunit
+import ulid
 
 pub fn main() -> Nil {
   gleeunit.main()
@@ -38,4 +39,14 @@ pub fn crockford_decode_no_checksum_test() {
   // with a small l
   assert "CHV6YWKAC5NM5N55C5VPAVVFDXQP2XV5CRT34DlJCR" |> crockford_base32.decode
     == "dvorjakBԥaweooooawef4242f" |> bit_array.from_string
+}
+
+pub fn randomness_test() {
+  assert ulid.generated_ulid() != ulid.generated_ulid()
+  assert ulid.generated_ulid() != ulid.generated_ulid()
+  assert ulid.generated_ulid() != ulid.generated_ulid()
+  assert ulid.generated_ulid() != ulid.generated_ulid()
+  assert ulid.generated_ulid() != ulid.generated_ulid()
+  assert ulid.generated_ulid() != ulid.generated_ulid()
+  assert ulid.generated_ulid() != ulid.generated_ulid()
 }

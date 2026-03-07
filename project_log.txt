@@ -1,0 +1,7 @@
+7th march 2026
+-  implemented crockford base32 encoding and decoding
+-  implemented the timestamp part
+- (todo) implement the checksum
+- (todo) implement the randomness part
+- (todo) performance, use bitshift instead of allocations
+- (todo) use map fold
