@@ -1,20 +1,20 @@
 import gleam/bit_array
 import gleam/int
-import gleam/io
+import gleam/list
 import gleam/result
 import gleam/string
 
-pub fn encode_with_checksum(bits: BitArray) -> Result(String, EncodingError) {
-  //  // pad to make a mulitple of 5
-  //  let bits =
-  //    bit_array.append(bits, case bit_array.bit_size(bits) % 5 {
-  //      0 -> <<>>
-  //      oth -> <<0:size({ 5 - oth })>>
-  //    })
-  //
-  //  iterate_bytes(bits, Ok(""))
-  todo
-}
+//pub fn encode_with_checksum(bits: BitArray) -> Result(String, EncodingError) {
+//  // pad to make a mulitple of 5
+//  let bits =
+//    bit_array.append(bits, case bit_array.bit_size(bits) % 5 {
+//      0 -> <<>>
+//      oth -> <<0:size({ 5 - oth })>>
+//    })
+//
+//  iterate_bytes(bits, Ok(""))
+//  todo
+//}
 
 pub fn encode(bits: BitArray) -> Result(String, EncodingError) {
   // pad to make a mulitple of 5
@@ -27,17 +27,83 @@ pub fn encode(bits: BitArray) -> Result(String, EncodingError) {
   iterate_bytes(bits, Ok(""))
 }
 
-//TODO: now write a map so we can decode easier, then write the encode with checksum function
-//pub fn decode(ip: String) -> BitArray {
-//  // pad to make a mulitple of 5
-//  let bits =
-//    bit_array.append(bits, case bit_array.bit_size(bits) % 5 {
-//      0 -> <<>>
-//      oth -> <<0:size({ 5 - oth })>>
-//    })
-//
-//  iterate_bytes(bits, Ok(""))
-//}
+fn process_char(c: String) -> Int {
+  // example operation
+  case c {
+    "L" | "1" -> 1
+    "2" -> 2
+    "3" -> 3
+    "4" -> 4
+    "5" -> 5
+    "6" -> 6
+    "7" -> 7
+    "8" -> 8
+    "9" -> 9
+    "A" -> 10
+    "B" -> 11
+    "C" -> 12
+    "D" -> 13
+    "E" -> 14
+    "F" -> 15
+    "G" -> 16
+    "H" -> 17
+    "J" -> 18
+    "K" -> 19
+    "M" -> 20
+    "N" -> 21
+    "P" -> 22
+    "Q" -> 23
+    "R" -> 24
+    "S" -> 25
+    "T" -> 26
+    "V" -> 27
+    "W" -> 28
+    "X" -> 29
+    "Y" -> 30
+    "Z" -> 31
+    _ -> panic as "impossible"
+    // TODO: DecodeError
+  }
+}
+
+fn acc(ip: List(BitArray), sum: BitArray) -> BitArray {
+  case ip {
+    [head, ..tail] -> acc(tail, bit_array.append(sum, head))
+    [] -> sum
+  }
+}
+
+pub fn print_bytes(bits: BitArray) {
+  case bits {
+    <<byte:size(8), rest:bits>> -> {
+      echo byte
+      print_bytes(rest)
+    }
+    rest -> {
+      echo rest
+    }
+  }
+}
+
+// TODO: now write a map so we can decode easier, then write the encode with checksum function
+pub fn decode(ip: String) -> BitArray {
+  ip
+  |> string.uppercase
+  |> string.to_graphemes
+  |> list.map(process_char)
+  |> list.map(fn(i) { <<i:5>> })
+  |> acc(<<>>)
+  |> bit_array.pad_to_bytes
+  |> trim_right_zeros
+}
+
+fn trim_right_zeros(bits: BitArray) -> BitArray {
+  let s = bit_array.bit_size(bits)
+  case bits {
+    <<rest:bits-size(s - 8), 0:8>> -> trim_right_zeros(rest)
+    _ -> bits
+  }
+}
 
 pub type EncodingError {
   UnexpectedChar(got: Int)
@@ -110,8 +176,7 @@ fn iterate_bytes(
 pub fn i() -> Nil {
   bit_array.from_string("hello")
   |> encode
-  |> result.unwrap("")
-  |> io.println
-  //  <<2>> |> echo |> encode |> echo |> result.unwrap("") |> io.println
-  //  <<0>> |> echo |> encode |> echo |> result.unwrap("") |> io.println
+  |> result.unwrap(".")
+  |> decode
+  Nil
 }

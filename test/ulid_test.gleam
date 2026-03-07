@@ -30,3 +30,12 @@ pub fn wierd_crockford_encode_test() {
   assert bit_array.from_string("dvorjakBԥ") |> crockford_base32.encode
     == Ok("CHV6YWKAC5NM5N55")
 }
+
+pub fn crockford_decode_no_checksum_test() {
+  assert crockford_base32.decode("CHV6YWKAC5NM5N55C5VPAVVFDXQP2XV5CRT34D1JCR")
+    == bit_array.from_string("dvorjakBԥaweooooawef4242f")
+
+  // with a small l
+  assert "CHV6YWKAC5NM5N55C5VPAVVFDXQP2XV5CRT34DlJCR" |> crockford_base32.decode
+    == "dvorjakBԥaweooooawef4242f" |> bit_array.from_string
+}
