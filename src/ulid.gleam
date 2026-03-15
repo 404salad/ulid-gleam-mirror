@@ -2,7 +2,9 @@ import gleam/int
 import gleam/result
 import gleam/string
 import gleam/time/timestamp
-import random_wrapper
+
+@external(erlang, "crypto", "strong_rand_bytes")
+pub fn strong_rand_bytes(n: Int) -> BitArray
 
 import crockford_base32
 
@@ -22,7 +24,7 @@ pub fn generated_ulid() -> String {
 
   // 10*8 = 80  divide by 5 ie 16 chars
   let second_part =
-    random_wrapper.strong_rand_bytes(10)
+    strong_rand_bytes(10)
     |> crockford_base32.encode
     |> result.unwrap("")
 
